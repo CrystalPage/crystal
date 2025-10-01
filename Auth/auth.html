@@ -1,0 +1,1022 @@
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Motion Goats - Auth</title>
+    <link rel="icon" type="image/x-icon" href="images/logo.ico">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/all.min.css">
+    <script src="https://unpkg.com/scrollreveal"></script>
+    <script src="js/crypto-js.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Oxanium:wght@300;400;500;600;700;800&display=swap');
+
+        :root {
+            --primary: #000000;
+            --secondary: #1a1a1a;
+            --accent: #ff0000;
+            --accent-light: #ff4d4d;
+            --text: #f1f1f1;
+            --typewriter-white: #ff0000;
+            --discord-blue: #ff0000;
+            --discord-blue-hover: #cc0000;
+        }
+
+        body {
+            font-family: 'Oxanium', sans-serif;
+            background-color: var(--primary);
+            color: var(--text);
+            overflow-x: hidden;
+            margin: 0;
+            width: 100%;
+            height: 100vh;
+            min-height: 100vh;
+            touch-action: pan-up;
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, var(--accent), var(--accent-light));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .glow {
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+        }
+
+        .glow:hover {
+            box-shadow: 0 0 25px rgba(255, 0, 0, 0.8);
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--secondary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 10px;
+        }
+
+        .hidden-scroll {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease;
+        }
+
+        .show-scroll {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        #snowOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            object-fit: cover;
+            z-index: 40;
+            opacity: 0.7;
+            mix-blend-mode: screen;
+            pointer-events: none;
+        }
+
+        .auth-container {
+            background: var(--primary);
+            border: 1px solid var(--secondary);
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+            border-radius: 1rem;
+        }
+
+        .auth-container input {
+            background: #000000;
+            border: 1px solid #1a1a1a;
+            color: #ffffff;
+            padding: 0.5rem;
+            border-radius: 0.375rem;
+            width: 100%;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .auth-container input:focus {
+            outline: none;
+            border-color: #ff0000;
+            box-shadow: 0 0 8px rgba(255, 0, 0, 0.5);
+        }
+
+        .auth-container button {
+            background: var(--accent);
+            color: #ffffff;
+            padding: 0.75rem;
+            border-radius: 0.375rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .auth-container button:hover {
+            background: var(--accent-light);
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.8);
+        }
+
+        .auth-links a {
+            color: var(--text);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .auth-links a:hover {
+            color: var(--accent);
+        }
+
+        .error-message {
+            color: #ff4d4d;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .success-message {
+            color: #00ff00;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .tab-button {
+            background: none;
+            color: var(--text);
+            padding: 0.5rem 1rem;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .tab-button.active {
+            border-bottom: 2px solid var(--accent);
+            color: var(--accent);
+        }
+
+        .tab-button:hover {
+            color: var(--accent);
+        }
+
+        .product-card {
+    background: var(--secondary);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    position: relative;
+    min-width: 0; /* Flexibilität erhöhen */
+    width: 100%; /* Vollständige Breite im Grid nutzen */
+    max-width: 300px; /* Maximale Breite festlegen, um längere Namen zu fassen */
+}
+
+        .product-card img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 0.25rem;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .status-dot.active {
+            background: #00ff00;
+        }
+
+        .status-dot.inactive {
+            background: #ff0000;
+        }
+
+        @font-face {
+            font-family: 'Doctor Glitch';
+            src: url('/assets/Doctor Glitch.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        .center-modal {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-open {
+            overflow: hidden;
+        }
+
+        #user-dropdown button {
+    background-color: #000000 !important;
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.8) !important;
+    transition: box-shadow 0.3s ease !important;
+}
+
+#user-dropdown button:hover {
+    box-shadow: 0 0 15px rgba(255, 0, 0, 1) !important;
+}
+
+#dropdown-menu {
+    background-color: #000000 !important;
+    border: 1px solid #1a1a1a !important;
+}
+
+#dropdown-menu a,
+#dropdown-menu button {
+    color: #ffffff !important;
+}
+
+#dropdown-menu a:hover,
+#dropdown-menu button:hover {
+    background-color: #1a1a1a !important;
+    color: #ff0000 !important;
+}
+
+#dropdown-menu #logout-button {
+    box-shadow: none !important;
+    background-color: #000000 !important;
+}
+
+#dropdown-menu #logout-button:hover {
+    box-shadow: none !important;
+    background-color: #1a1a1a !important;
+    color: #ff0000 !important;
+}
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Snow Overlay -->
+    <video id="snowOverlay" autoplay="" loop="" muted="" playsinline="">
+        <source src="media/snow_overlay.mp4" type="video/mp4">
+    </video>
+
+    <!-- Navigation -->
+    <nav class="bg-black bg-opacity-80 backdrop-blur-md fixed w-full z-40 border-b border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <div class="flex items-center">
+                            <img src="images/logo.ico" alt="Motion Goats Logo" class="w-10 h-10 mr-2">
+                            <span class="text-white font-bold text-xl">Motion <span class="text-red-600">Goats Shop</span></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition" href="../index.html#products">Products</a>
+<a class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition" href="../index.html#features">Features</a>
+<a class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition" href="../index.html#faq">FAQ</a>
+<a class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition" href="../index.html#terms">Terms</a>
+<a class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition" href="../index.html#reviews">Reviews</a>
+                        <div class="flex items-center space-x-4">
+                            <a href="https://discord.gg/motiongoats" target="_blank" class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition duration-300">
+                                Discord
+                            </a>
+                            <div id="auth-buttons" class="flex space-x-4">
+                                <a class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition duration-300" href="#s">
+                                    Login
+                                </a>
+                            </div>
+                            <div id="user-dropdown" class="relative hidden">
+                                <button id="dropdown-toggle" class="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800 transition duration-300" style="box-shadow: 0 0 10px rgba(255, 0, 0, 0.8);">
+                                    <span id="username-display">User</span>
+                                </button>
+                                <div id="dropdown-menu" class="absolute right-0 mt-2 w-48 bg-black rounded-md shadow-lg py-2 border border-gray-800 hidden">
+                                    <a href="#dashboard" class="block px-4 py-2 text-white hover:bg-gray-900">Dashboard</a>
+                                    <a href="#redeem" class="block px-4 py-2 text-white hover:bg-gray-900">Redeem</a>
+                                    <a href="#premium-chat" class="block px-4 py-2 text-white hover:bg-gray-900">Premium Chat</a>
+                                    <button id="logout-button" class="block w-full text-left px-4 py-2 text-white hover:bg-gray-900">Logout</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="text-gray-300 hover:text-white focus:outline-none">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="mobile-menu" class="md:hidden hidden bg-black bg-opacity-90 border-t border-gray-800">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a class="text-gray-300 hover:bg-gray-900 hover:text-white block px-3 py-2 rounded-md text-base font-medium" href="../index.html#products">Products</a>
+<a class="text-gray-300 hover:bg-gray-900 hover:text-white block px-3 py-2 rounded-md text-base font-medium" href="../index.html#features">Features</a>
+<a class="text-gray-300 hover:bg-gray-900 hover:text-white block px-3 py-2 rounded-md text-base font-medium" href="../index.html#faq">FAQ</a>
+<a class="text-gray-300 hover:bg-gray-900 hover:text-white block px-3 py-2 rounded-md text-base font-medium" href="../index.html#terms">Terms</a>
+<a class="text-gray-300 hover:bg-gray-900 hover:text-white block px-3 py-2 rounded-md text-base font-medium" href="../index.html#reviews">Reviews</a>
+                <a href="https://discord.gg/motiongoats" target="_blank" class="bg-red-600 hover:bg-red-700 text-white block px-3 py-2 rounded-md text-base font-medium text-center">
+                    <i class="fab fa-discord mr-2"></i> Discord
+                </a>
+                <div id="mobile-auth-buttons">
+                    <a class="bg-red-600 hover:bg-red-700 text-white block px-3 py-2 rounded-md text-base font-medium text-center" href="#login">Login</a>
+                </div>
+                <div id="mobile-user-dropdown" class="hidden">
+                    <a class="text-gray-300 hover:bg-gray-900 hover:text-white block px-3 py-2 rounded-md text-base font-medium" href="#dashboard">Dashboard</a>
+                    <a class="text-gray-300 hover:bg-gray-900 hover:text-white block px-3 py-2 rounded-md text-base font-medium" href="#redeem">Redeem</a>
+                    <a class="text-gray-300 hover:bg-gray-900 hover:text-white block px-3 py-2 rounded-md text-base font-medium" href="#premium-chat">Premium Chat</a>
+                    <a href="#" id="mobile-logout-button" class="text-gray-300 hover:bg-gray-900 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Logout</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div id="mainContent" class="relative pt-24 pb-20 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto">
+            <div id="auth-container" class="auth-container p-8 max-w-md mx-auto">
+                <!-- Login Form -->
+                <div id="login-form" class="form-content">
+                    <h2 class="text-2xl font-bold mb-4 gradient-text text-center">Login</h2>
+                    <form id="loginForm" onsubmit="handleLogin(event)">
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Email or Discord Name</label>
+                                <input id="login-username" type="text" placeholder="Enter email or Discord name" required="">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Password</label>
+                                <input id="login-password" type="password" placeholder="Enter password" required="">
+                            </div>
+                            <div>
+                                <p id="loginError" class="error-message">Invalid email or password.</p>
+                            </div>
+                            <button type="submit" class="w-full">Login</button>
+                            <div class="auth-links flex justify-between text-sm">
+                                <a href="#reset" id="forgotPassword">Forgot password?</a>
+                                <a href="#register" id="switchToRegister">Register</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <!-- Register Form -->
+                <div id="register-form" class="form-content hidden">
+                    <h2 class="text-2xl font-bold mb-4 gradient-text text-center">Register</h2>
+                    <form id="registerForm" onsubmit="handleRegister(event)">
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Discord Name (e.g., username#1234)</label>
+                                <input id="register-discord" type="text" placeholder="Enter Discord name" required="">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Email</label>
+                                <input id="register-email" type="email" placeholder="Enter email" required="">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Password</label>
+                                <input id="register-password" type="password" placeholder="Enter password" required="">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Confirm Password</label>
+                                <input id="register-confirm-password" type="password" placeholder="Confirm password" required="">
+                            </div>
+                            <div>
+                                <p id="registerError" class="error-message">Registration failed. Try again.</p>
+                                <p id="registerSuccess" class="success-message">Account created! Please log in.</p>
+                            </div>
+                            <button type="submit" class="w-full">Register</button>
+                            <div class="auth-links text-sm">
+                                <a href="#login" id="backToLogin">Back to Login</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- Dashboard Tabs -->
+            <div id="dashboard-container" class="auth-container p-8 max-w-4xl mx-auto hidden">
+                <!-- Dashboard Content -->
+                <div id="dashboard-content" class="tab-content">
+                    <h2 class="text-3xl font-bold mb-4 gradient-text text-center">Your Dashboard</h2>
+                    <p class="text-xl mb-2 text-center">Welcome, <span id="dashboard-username" class="font-semibold">User</span>!</p>
+                    <p class="text-lg mb-6 text-center">Here, your active licenses are displayed. After purchasing a product, you’ll receive a license key via Discord. Redeem your key in the Redeem tab, and the status dot for your purchased product will turn green, indicating an active license.</p>
+                    <h3 class="text-2xl font-semibold mb-4 gradient-text text-center">Your Products</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <!-- Guns.lol Viewbot -->
+                        <div class="product-card relative">
+                            <div class="flex items-center gap-4 mb-4">
+                                <img src="images/gunslol.png" alt="Guns.lol Viewbot" class="w-24 h-24 object-cover rounded-md">
+                                <h4 class="text-lg font-semibold text-white">Guns.lol Viewbot</h4>
+                            </div>
+                            <div class="absolute bottom-2 left-2 flex items-center">
+                                <span id="status-guns-lol" class="status-dot mr-2"></span>
+                                <span id="status-text-guns-lol" class="text-sm text-gray-400">Not Active</span>
+                            </div>
+                        </div>
+                        <!-- FakeCrime.bio Viewbot -->
+                        <div class="product-card relative">
+                            <div class="flex items-center gap-4 mb-4">
+                                <img src="images/fakecrimebio.png" alt="FakeCrime.bio Viewbot" class="w-24 h-24 object-cover rounded-md">
+                                <h4 class="text-lg font-semibold text-white">FakeCrime.bio Viewbot</h4>
+                            </div>
+                            <div class="absolute bottom-2 left-2 flex items-center">
+                                <span id="status-fakecrime" class="status-dot mr-2"></span>
+                                <span id="status-text-fakecrime" class="text-sm text-gray-400">Not Active</span>
+                            </div>
+                        </div>
+                        <!-- CrypticForge -->
+                        <div class="product-card relative">
+                            <div class="flex items-center gap-4 mb-4">
+                                <img src="images/crypticforge.png" alt="CrypticForge" class="w-24 h-24 object-cover rounded-md">
+                                <h4 class="text-lg font-semibold text-white">CrypticForge</h4>
+                            </div>
+                            <div class="absolute bottom-2 left-2 flex items-center">
+                                <span id="status-crypticforge" class="status-dot mr-2"></span>
+                                <span id="status-text-crypticforge" class="text-sm text-gray-400">Not Active</span>
+                            </div>
+                        </div>
+                        <!-- Monero Crypto Jacker -->
+                        <div class="product-card relative">
+                            <div class="flex items-center gap-4 mb-4">
+                                <img src="images/cryptominer.png" alt="Monero Crypto Jacker" class="w-24 h-24 object-cover rounded-md">
+                                <h4 class="text-lg font-semibold text-white">Monero Crypto Jacker</h4>
+                            </div>
+                            <div class="absolute bottom-2 left-2 flex items-center">
+                                <span id="status-monero" class="status-dot mr-2"></span>
+                                <span id="status-text-monero" class="text-sm text-gray-400">Not Active</span>
+                            </div>
+                        </div>
+                        <!-- MotionEye -->
+                        <div class="product-card relative">
+                            <div class="flex items-center gap-4 mb-4">
+                                <img src="images/motioneye.png" alt="MotionEye" class="w-24 h-24 object-cover rounded-md">
+                                <h4 class="text-lg font-semibold text-white">MotionEye</h4>
+                            </div>
+                            <div class="absolute bottom-2 left-2 flex items-center">
+                                <span id="status-motioneye" class="status-dot mr-2"></span>
+                                <span id="status-text-motioneye" class="text-sm text-gray-400">Not Active</span>
+                            </div>
+                        </div>
+                        <!-- Evil GPT -->
+                        <div class="product-card relative">
+                            <div class="flex items-center gap-4 mb-4">
+                                <img src="images/evilgpt.png" alt="Evil GPT" class="w-24 h-24 object-cover rounded-md">
+                                <h4 class="text-lg font-semibold text-white">Evil GPT</h4>
+                            </div>
+                            <div class="absolute bottom-2 left-2 flex items-center">
+                                <span id="status-evil-gpt" class="status-dot mr-2"></span>
+                                <span id="status-text-evil-gpt" class="text-sm text-gray-400">Not Active</span>
+                            </div>
+                        </div>
+                        <!-- FUD Crypter -->
+                        <div class="product-card relative">
+                            <div class="flex items-center gap-4 mb-4">
+                                <img src="images/fudcrypter.png" alt="FUD Crypter" class="w-24 h-24 object-cover rounded-md">
+                                <h4 class="text-lg font-semibold text-white">FUD Crypter</h4>
+                            </div>
+                            <div class="absolute bottom-2 left-2 flex items-center">
+                                <span id="status-fud-crypter" class="status-dot mr-2"></span>
+                                <span id="status-text-fud-crypter" class="text-sm text-gray-400">Not Active</span>
+                            </div>
+                        </div>
+                        <!-- DarkPulse DDoS -->
+                        <div class="product-card relative">
+                            <div class="flex items-center gap-4 mb-4">
+                                <img src="images/darkpulse.png" alt="DarkPulse DDoS" class="w-24 h-24 object-cover rounded-md">
+                                <h4 class="text-lg font-semibold text-white">DarkPulse DDoS</h4>
+                            </div>
+                            <div class="absolute bottom-2 left-2 flex items-center">
+                                <span id="status-darkpulse" class="status-dot mr-2"></span>
+                                <span id="status-text-darkpulse" class="text-sm text-gray-400">Not Active</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Redeem Content -->
+                <div id="redeem-content" class="tab-content hidden">
+                    <h2 class="text-3xl font-bold mb-4 gradient-text text-center">Redeem Code</h2>
+                    <p class="text-center mb-4">
+                        All buyers receive their license codes via Discord. Redeem your code here to unlock your download. Your active licenses will be displayed in the Dashboard under the corresponding product.
+                    </p>
+                    <form id="redeemForm" onsubmit="handleRedeem(event)">
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Enter Code</label>
+                                <input id="redeem-code" type="text" placeholder="Enter redeem code" required="">
+                            </div>
+                            <div>
+                                <p id="redeemError" class="error-message">Invalid code.</p>
+                            </div>
+                            <button type="submit" class="w-full">Redeem</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- Premium Chat Content -->
+                <div id="premium-chat-content" class="tab-content hidden">
+                    <h2 class="text-4xl font-bold mb-6 gradient-text text-center">Premium Chat</h2>
+                    <div class="bg-black p-6 rounded-lg shadow-md text-center">
+                        <div class="mb-4">
+                            <div class="relative w-20 h-20 mx-auto rounded-full bg-black overflow-hidden glow" style="box-shadow: 0 0 15px rgba(255, 0, 0, 0.8);">
+                                <img src="images/logo.ico" alt="Motion Goats Logo" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-16 object-cover">
+                            </div>
+                        </div>
+                        <h3 class="text-2xl font-semibold text-red-500 mb-4">Access Denied</h3>
+                        <p class="text-gray-300 mb-4">The Premium Chat is an exclusive feature for customers with active licenses. Unlock access by purchasing one of our products and redeeming your license key!</p>
+                        <p class="text-gray-300 mb-4">Join hundreds of active users in our Premium Chat. Connect with others, ask questions, share tips, and network over shared interests. This space is designed for active buyers to discuss tools, strategies, and more!</p>
+                        <p class="text-gray-400 italic mb-6">Purchase any product to gain access – your gateway to a thriving community awaits!</p>
+                        <a class="bg-red-600 text-white px-6 py-3 rounded-md hover:bg-red-700 transition duration-300" href="../index.html#products">View Products</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-black border-t border-gray-800 py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <img src="images/logo.ico" alt="Motion Goats Logo" class="w-10 h-10 mr-2">
+                        <span class="text-white font-bold text-xl">Motion <span class="text-red-600">Goats Shop</span></span>
+                    </div>
+                    <p class="text-gray-400 text-sm">
+                        Premium tools for advanced users. Exclusively available on Discord.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="text-white font-semibold mb-4">Products</h3>
+                    <ul class="space-y-2">
+                        <li><a class="text-gray-400 hover:text-white transition text-sm" href="../index.html#products">Guns.lol Viewbot</a></li>
+<li><a class="text-gray-400 hover:text-white transition text-sm" href="../index.html#products">FakeCrime.bio Viewbot</a></li>
+<li><a class="text-gray-400 hover:text-white transition text-sm" href="../index.html#products">Monero Crypto Jacker</a></li>
+<li><a class="text-gray-400 hover:text-white transition text-sm" href="../index.html#products">Evil GPT</a></li>
+<li><a class="text-gray-400 hover:text-white transition text-sm" href="../index.html#products">CrypticForge</a></li>
+<li><a class="text-gray-400 hover:text-white transition text-sm" href="../index.html#products">MotionEye</a></li>
+<li><a class="text-gray-400 hover:text-white transition text-sm" href="../index.html#products">FUD Crypter</a></li>
+<li><a class="text-gray-400 hover:text-white transition text-sm" href="../index.html#products">DarkPulse DDoS</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-white font-semibold mb-4">Support</h3>
+                    <ul class="space-y-2">
+                        <li><a href="shop.html#faq" class="text-gray-400 hover:text-white transition text-sm">FAQ</a></li>
+                        <li><a href="https://discord.gg/motiongoats" target="_blank" class="text-gray-400 hover:text-white transition text-sm">Discord Server</a></li>
+                        <li><a href="shop.html#terms" class="text-gray-400 hover:text-white transition text-sm">Terms of Service</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition text-sm">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-white font-semibold mb-4">Contact</h3>
+                    <ul class="space-y-2">
+                        <li class="text-gray-400 text-sm">Only via Discord</li>
+                        <li>
+                            <a href="https://discord.gg/motiongoats" target="_blank" class="inline-flex items-center text-gray-400 hover:text-white transition text-sm">
+                                <i class="fab fa-discord mr-2"></i> Motion Goats
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Registration Success Modal -->
+    <div id="registrationSuccessModal" class="fixed inset-0 bg-black bg-opacity-90 z-50 items-center justify-center hidden p-8 center-modal">
+        <div class="bg-gray-900 rounded-xl p-8 max-w-md w-full border-2 border-green-500 text-center">
+            <div class="w-20 h-20 bg-green-500 bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i class="fas fa-check text-green-500 text-3xl"></i>
+            </div>
+            <h2 class="text-2xl font-bold mb-4">Registration Successful!</h2>
+            <p class="text-gray-300 mb-6">
+                Your account has been created successfully. You can now log in to access your dashboard.
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center gap-3">
+                <a href="#login" class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg transition flex items-center justify-center">
+                    <i class="fas fa-sign-in-alt mr-2"></i> Go to Login
+                </a>
+                <button onclick="closeRegistrationSuccessModal()" class="bg-gray-700 hover:bg-gray-600 text-white px-6 py-3 rounded-lg transition">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check if external scripts are loaded
+        window.addEventListener('load', () => {
+            console.log('Window loaded');
+            if (typeof CryptoJS === 'undefined') {
+                console.error('CryptoJS not loaded. Password hashing will be skipped for testing.');
+            }
+            if (typeof ScrollReveal === 'undefined') {
+                console.error('ScrollReveal not loaded.');
+            }
+        });
+
+        // Initialize products
+        const products = [
+            { name: 'Guns.lol Viewbot', id: 'guns-lol' },
+            { name: 'FakeCrime.bio Viewbot', id: 'fakecrime' },
+            { name: 'CrypticForge', id: 'crypticforge' },
+            { name: 'Monero Crypto Jacker', id: 'monero' },
+            { name: 'MotionEye', id: 'motioneye' },
+            { name: 'Evil GPT', id: 'evil-gpt' },
+            { name: 'FUD Crypter', id: 'fud-crypter' },
+            { name: 'DarkPulse DDoS', id: 'darkpulse' },
+        ];
+
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-button').addEventListener('click', () => {
+            console.log('Mobile menu toggled');
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+
+        // Dropdown menu handling
+        document.getElementById('dropdown-toggle').addEventListener('click', () => {
+            console.log('Dropdown toggled');
+            document.getElementById('dropdown-menu').classList.toggle('hidden');
+        });
+
+        // Form switching
+        document.getElementById('switchToRegister').addEventListener('click', (e) => {
+            e.preventDefault();
+            console.log('Switching to Register form');
+            document.getElementById('login-form').classList.add('hidden');
+            document.getElementById('register-form').classList.remove('hidden');
+            document.getElementById('registerError').style.display = 'none';
+            document.getElementById('registerSuccess').style.display = 'none';
+            window.location.hash = 'register';
+        });
+
+        document.getElementById('backToLogin').addEventListener('click', (e) => {
+            e.preventDefault();
+            console.log('Switching to Login form');
+            document.getElementById('register-form').classList.add('hidden');
+            document.getElementById('login-form').classList.remove('hidden');
+            document.getElementById('loginError').style.display = 'none';
+            window.location.hash = 'login';
+        });
+
+        // Handle login
+        function handleLogin(event) {
+            event.preventDefault();
+            console.log('handleLogin called');
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
+            const error = document.getElementById('loginError');
+            let passwordHash;
+
+            // Fixed admin account: Admin / Admin
+            if (username === 'Admin' && password === 'Admin') {
+                const currentUser = {
+                    username: 'Admin',
+                    email: 'admin@local',
+                    licenses: [],
+                    role: 'admin'
+                };
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                error.style.display = 'none';
+                updateUI();
+                window.location.hash = 'dashboard';
+                return;
+            }
+
+            try {
+                if (typeof CryptoJS !== 'undefined') {
+                    passwordHash = CryptoJS.SHA256(password).toString();
+                } else {
+                    console.warn('CryptoJS not available, using plain password for testing');
+                    passwordHash = password;
+                }
+            } catch (err) {
+                console.error('Error hashing password:', err);
+                error.textContent = 'Error processing login. Check console.';
+                error.style.display = 'block';
+                return;
+            }
+
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const user = users.find(u => (u.username === username || u.email === username) && u.passwordHash === passwordHash);
+
+            if (user) {
+                const currentUser = {
+                    username: user.username,
+                    email: user.email,
+                    licenses: user.licenses || [],
+                    role: user.role || ((user.username && user.username.toLowerCase().startsWith('admin')) || (user.email && user.email.toLowerCase().startsWith('admin')) ? 'admin' : 'user')
+                };
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                error.style.display = 'none';
+                updateUI();
+                window.location.hash = 'dashboard';
+            } else {
+                error.style.display = 'block';
+            }
+        }
+
+        // Close registration success modal
+        function closeRegistrationSuccessModal() {
+            document.getElementById('mainContent').classList.remove('modal-open');
+            document.getElementById('registrationSuccessModal').classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        // Show registration success modal
+        function showRegistrationSuccessModal() {
+            if (window.location.pathname.includes('auth.html')) {
+                const modal = document.getElementById('registrationSuccessModal');
+                if (modal) {
+                    document.getElementById('mainContent').classList.add('modal-open');
+                    modal.classList.remove('hidden');
+                    document.body.style.overflow = 'hidden';
+                }
+            }
+        }
+
+        // Handle register
+        function handleRegister(event) {
+            event.preventDefault();
+            console.log('handleRegister called');
+
+            const discordInput = document.getElementById('register-discord');
+            const emailInput = document.getElementById('register-email');
+            const passwordInput = document.getElementById('register-password');
+            const confirmPasswordInput = document.getElementById('register-confirm-password');
+            const error = document.getElementById('registerError');
+            const success = document.getElementById('registerSuccess');
+
+            if (!discordInput || !emailInput || !passwordInput || !confirmPasswordInput) {
+                console.error('One or more input elements not found');
+                error.textContent = 'Form elements missing. Check console.';
+                error.style.display = 'block';
+                success.style.display = 'none';
+                return;
+            }
+
+            const discord = discordInput.value;
+            const email = emailInput.value;
+            const password = passwordInput.value;
+            const confirmPassword = confirmPasswordInput.value;
+            console.log('Inputs:', { discord, email, password, confirmPassword });
+
+            if (!discord || !email || !password || !confirmPassword) {
+                console.log('Validation failed: Empty fields');
+                error.textContent = 'Please fill all fields.';
+                error.style.display = 'block';
+                success.style.display = 'none';
+                return;
+            }
+
+            let passwordHash;
+            try {
+                if (typeof CryptoJS !== 'undefined') {
+                    passwordHash = CryptoJS.SHA256(password).toString();
+                    console.log('Password hashed successfully');
+                } else {
+                    console.warn('CryptoJS not available, using plain password for testing');
+                    passwordHash = password;
+                }
+            } catch (err) {
+                console.error('Error hashing password:', err);
+                error.textContent = 'Error processing registration. Check console.';
+                error.style.display = 'block';
+                success.style.display = 'none';
+                return;
+            }
+
+            let users;
+            try {
+                const storedUsers = localStorage.getItem('users');
+                users = storedUsers ? JSON.parse(storedUsers) : [];
+                console.log('Raw stored users:', storedUsers);
+                console.log('Parsed users:', users);
+                if (!Array.isArray(users)) {
+                    console.error('Users is not an array, resetting to empty array');
+                    users = [];
+                }
+            } catch (err) {
+                console.error('Error parsing users from localStorage:', err);
+                users = [];
+                error.textContent = 'Error accessing storage. Resetting user list.';
+                error.style.display = 'block';
+                success.style.display = 'none';
+            }
+
+            const isAdmin = (discord && discord.toLowerCase().startsWith('admin')) || (email && email.toLowerCase().startsWith('admin'));
+            const newUser = { username: discord, email, passwordHash, licenses: [], role: isAdmin ? 'admin' : 'user' };
+            users.push(newUser);
+            try {
+                localStorage.setItem('users', JSON.stringify(users));
+                console.log('User saved to localStorage:', newUser);
+            } catch (err) {
+                console.error('Error saving user to localStorage:', err);
+                error.textContent = 'Error saving user. Check console.';
+                error.style.display = 'block';
+                success.style.display = 'none';
+                return;
+            }
+
+            const userProducts = {};
+            products.forEach(p => {
+                userProducts[p.name] = false;
+            });
+            try {
+                localStorage.setItem(`user_products-${discord}`, JSON.stringify(userProducts));
+                console.log('User products initialized:', userProducts);
+            } catch (err) {
+                console.error('Error saving user products to localStorage:', err);
+                error.textContent = 'Error initializing products. Check console.';
+                error.style.display = 'block';
+                success.style.display = 'none';
+                return;
+            }
+
+            error.style.display = 'none';
+            success.style.display = 'none';
+            document.getElementById('registerForm').reset();
+            showRegistrationSuccessModal();
+        }
+
+        // Handle logout
+        function handleLogout() {
+            console.log('handleLogout called');
+            localStorage.removeItem('currentUser');
+            updateUI();
+            window.location.hash = 'login';
+        }
+
+        // Update UI based on login status
+        function updateUI() {
+            console.log('updateUI called');
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            const authContainer = document.getElementById('auth-container');
+            const dashboardContainer = document.getElementById('dashboard-container');
+            const authButtons = document.getElementById('auth-buttons');
+            const userDropdown = document.getElementById('user-dropdown');
+            const mobileAuthButtons = document.getElementById('mobile-auth-buttons');
+            const mobileUserDropdown = document.getElementById('mobile-user-dropdown');
+            const usernameDisplay = document.getElementById('username-display');
+            const dashboardUsername = document.getElementById('dashboard-username');
+            const dropdownToggle = document.getElementById('dropdown-toggle');
+            const dropdownMenu = document.getElementById('dropdown-menu');
+
+            if (!authContainer || !dashboardContainer || !authButtons || !userDropdown || !mobileAuthButtons || !mobileUserDropdown || !usernameDisplay || !dropdownToggle || !dropdownMenu) {
+                console.error('One or more UI elements not found:', {
+                    authContainer, dashboardContainer, authButtons, userDropdown, mobileAuthButtons, mobileUserDropdown, usernameDisplay, dropdownToggle, dropdownMenu
+                });
+                return;
+            }
+
+            if (currentUser) {
+                authContainer.classList.add('hidden');
+                dashboardContainer.classList.remove('hidden');
+                authButtons.classList.add('hidden');
+                userDropdown.classList.remove('hidden');
+                mobileAuthButtons.classList.add('hidden');
+                mobileUserDropdown.classList.remove('hidden');
+                usernameDisplay.textContent = currentUser.username;
+                if (dashboardUsername) {
+                    dashboardUsername.textContent = currentUser.username;
+                }
+                updateProductStatus();
+                showSection();
+            } else {
+                authContainer.classList.remove('hidden');
+                dashboardContainer.classList.add('hidden');
+                authButtons.classList.remove('hidden');
+                userDropdown.classList.add('hidden');
+                mobileAuthButtons.classList.remove('hidden');
+                mobileUserDropdown.classList.add('hidden');
+                const hash = window.location.hash;
+                if (hash === '#register') document.getElementById('switchToRegister').click();
+                else document.getElementById('backToLogin').click();
+            }
+        }
+
+        // Update product status
+        function updateProductStatus() {
+            console.log('updateProductStatus called');
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (currentUser) {
+                const userProducts = JSON.parse(localStorage.getItem(`user_products-${currentUser.username}`)) || {};
+                products.forEach(product => {
+                    const statusDot = document.getElementById(`status-${product.id}`);
+                    if (statusDot) {
+                        statusDot.classList.remove('active', 'inactive');
+                        statusDot.classList.add(userProducts[product.name] ? 'active' : 'inactive');
+                    }
+                });
+            }
+        }
+
+        // Handle forgot password (placeholder)
+        document.getElementById('forgotPassword').addEventListener('click', (e) => {
+            e.preventDefault();
+            console.log('Forgot password clicked');
+            alert('Forgot password functionality not implemented yet.');
+        });
+
+        // Initialize ScrollReveal
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('DOM fully loaded');
+            if (typeof ScrollReveal !== 'undefined') {
+                ScrollReveal().reveal('.hidden-scroll', {
+                    delay: 200,
+                    distance: '20px',
+                    origin: 'bottom',
+                    interval: 100,
+                    reset: true
+                });
+            } else {
+                console.warn('ScrollReveal not available, skipping animations');
+            }
+            updateUI();
+        });
+
+        // Logout buttons
+        document.getElementById('logout-button').addEventListener('click', handleLogout);
+        document.getElementById('mobile-logout-button').addEventListener('click', handleLogout);
+
+        // Handle redeem
+        function handleRedeem(event) {
+            event.preventDefault();
+            console.log('handleRedeem called');
+            const code = document.getElementById('redeem-code').value;
+            const error = document.getElementById('redeemError');
+
+            if (code === 'VALID123') {
+                const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                if (currentUser) {
+                    currentUser.licenses = currentUser.licenses || [];
+                    currentUser.licenses.push({ product: 'Monero Crypto Jacker', variant: 'Lifetime', status: 'Active' });
+                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                    const userProducts = JSON.parse(localStorage.getItem(`user_products-${currentUser.username}`)) || {};
+                    userProducts['Monero Crypto Jacker'] = true;
+                    localStorage.setItem(`user_products-${currentUser.username}`, JSON.stringify(userProducts));
+                    updateProductStatus();
+                    error.style.display = 'none';
+                    alert('License activated! Download available.');
+                } else {
+                    error.style.display = 'block';
+                }
+            } else {
+                error.style.display = 'block';
+            }
+        }
+
+        // Show section based on hash
+        function showSection() {
+            const sections = ['dashboard-content', 'redeem-content', 'premium-chat-content'];
+            const hash = window.location.hash.slice(1) || 'dashboard';
+            sections.forEach(section => {
+                const element = document.getElementById(section);
+                if (element) element.classList.add('hidden');
+            });
+            const sectionElement = document.getElementById(hash + '-content');
+            if (sectionElement) sectionElement.classList.remove('hidden');
+
+            // Premium Chat Zugang prüfen
+            if (hash === 'premium-chat') {
+                const user = JSON.parse(localStorage.getItem('currentUser')) || { licenses: [] };
+                if (!user.licenses.length) {
+                    document.getElementById('premium-chat-content').innerHTML = `
+                        <h2 class="text-4xl font-bold mb-6 gradient-text text-center">Premium Chat</h2>
+                        <div class="bg-black p-6 rounded-lg shadow-md text-center">
+<div class="mb-4">
+    <div class="relative w-20 h-20 mx-auto rounded-full bg-black overflow-hidden glow" style="box-shadow: 0 0 15px rgba(255, 0, 0, 0.8);">
+        <img src="./assets/logo.ico" alt="Motion Goats Logo" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-16 object-cover">
+    </div>
+</div>
+                            <h3 class="text-2xl font-semibold text-red-500 mb-4">Access Denied</h3>
+                            <p class="text-gray-300 mb-4">The Premium Chat is an exclusive feature for customers with active licenses. Unlock access by purchasing one of our products and redeeming your license key!</p>
+                            <p class="text-gray-300 mb-4">Join hundreds of active users in our Premium Chat. Connect with others, ask questions, share tips, and network over shared interests. This space is designed for active buyers to discuss tools, strategies, and more!</p>
+                            <p class="text-gray-400 italic mb-6">Purchase any product to gain access – your gateway to a thriving community awaits!</p>
+                            <a href="../index.html#products" class="bg-red-600 text-white px-6 py-3 rounded-md hover:bg-red-700 transition duration-300">View Products</a>
+                        </div>
+                    `;
+                } else {
+                    document.getElementById('premium-chat-content').innerHTML = `
+                        <h2 class="text-4xl font-bold mb-6 gradient-text text-center">Premium Chat</h2>
+                        <div class="bg-black p-6 rounded-lg shadow-md text-center">
+                            <div class="mb-4">
+                                <svg class="h-12 w-12 mx-auto text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-2xl font-semibold text-green-500 mb-4">Access Granted</h3>
+                            <p class="text-gray-300 mb-4">
+                                Welcome to the Premium Chat! Connect with hundreds of users with active licenses for various products. Ask questions, share tips, or network with others over shared interests. This chat is exclusively for active buyers, offering discussions, questions, and answers about all tools our customers use!
+                            </p>
+                            <a href="https://discord.gg/motiongoats" target="_blank" class="bg-red-600 text-white px-6 py-3 rounded-md hover:bg-red-700 transition duration-300">
+                                Join Premium Chat on Discord
+                            </a>
+                        </div>
+                    `;
+                }
+            }
+        }
+
+        // Initial call and hashchange listener
+        window.addEventListener('hashchange', showSection);
+        showSection();
+    </script>
+
+</body></html>

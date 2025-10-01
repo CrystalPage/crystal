@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crystal Shop</title>
+    <link rel="icon" type="image/x-icon" href="images/logo.ico">
+    
+                            <style>
+                                .hidden-scroll {
+                                    -ms-overflow-style: none;
+                                    scrollbar-width: none;
+                                }
+
+                                    .hidden-scroll::-webkit-scrollbar {
+                                        display: none;
+                                    }
+
+                                .new-label {
+                                    background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
+                                }
+
+                                .new-label-blue {
+                                    background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
+                                }
+
+                                .info-button-glow:hover {
+                                    box-shadow: 0 0 15px rgba(66, 153, 225, 0.5);
+                                }
+
+                                .product-card {
+                                    transition: transform 0.3s ease;
+                                }
+
+                                    .product-card:hover {
+                                        transform: translateY(-5px);
+                                    }
+
+                                .section-divider {
+                                    position: relative;
+                                    margin: 3rem 0;
+                                    text-align: center;
+                                }
+
+                                    .section-divider::before {
+                                        content: "";
+                                        position: absolute;
+                                        top: 50%;
+                                        left: 0;
+                                        right: 0;
+                                        height: 1px;
+                                        background: linear-gradient(90deg, transparent, #e53e3e, transparent);
+                                    }
+
+                                .section-title {
+                                    display: inline-block;
+                                    background-color: #1a202c;
+                                    padding: 0 1.5rem;
+                                    position: relative;
+                                    z-index: 1;
+                                    font-size: 1.5rem;
+                                    font-weight: bold;
+                                    color: #e53e3e;
+                                }
+
+                                .account-label {
+                                    background: linear-gradient(135deg, #805ad5 0%, #6b46c1 100%);
+                                }
+                            </style>
+
+                            <!-- Products Grid -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                                <!-- Guns.lol Viewbot -->
+                                <div class="product-card rounded-xl overflow-hidden border border-gray-800 hover:border-red-500 transition-all duration-300 hidden-scroll">
+                                    <div class="relative">
+                                        <img src="images/gunslol.png" alt="Guns.lol Viewbot" class="w-full h-48 object-cover">
+                                        <div class="absolute top-0 left-0 new-label text-white text-xs font-bold px-2 py-1 rounded-br">BESTSELLER</div>
+                                    </div>
+                                    <div class="p-6">
+                                        <h3 class="text-xl font-bold mb-2">Guns.lol Viewbot</h3>
+                                        <p class="text-gray-400 text-sm mb-4">Boost your viewer count on guns.lol with our premium viewbot.</p>
+                                        <div class="flex items-center justify-between mb-2">
+                                            <span class="text-2xl font-bold">€13.99</span>
+                                            <button onclick="openPurchaseModal('Guns.lol Viewbot', 13.99, 'guns', './assets/gunslol.png')" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition">
+                                                Buy <i class="fas fa-arrow-right ml-1"></i>
+                                            </button>
+                                        </div>
+                                        <button onclick="openProductInfoModal('Guns.lol Viewbot', '€13.99', './assets/gunslol.png', gunsLolChecklist)" class="bg-black hover:bg-black text-white px-4 py-2 rounded-lg text-sm font-medium transition w-full info-button-glow">
+                                            Info <i class="fas fa-info-circle ml-1"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- FakeCrime.bio Viewbot -->
+                                <div class="product-card rounded-xl overflow-hidden border border-gray-800 hover:border-red-500 transition-all duration-300 hidden-scroll">
+                                    <div class="relative">
+                                        <img src="images/fakecrimebio.png" alt="FakeCrime.bio Viewbot" class="w-full h-48 object-cover">
+                                        <div class="absolute top-0 left-0 new-label text-white text-xs font-bold px-2 py-1 rounded-br">BESTSELLER</div>
+                                    </div>
+                                    <div class="p-6">
+                                        <h3 class="text-xl font-bold mb-2">FakeCrime.bio Viewbot</h3>
+                                        <p class="text-gray-400 text-sm mb-4">Professional viewbot for fakecrime.bio with realistic metrics.</p>
+                                        <div class="flex items-center justify-between mb-2">
+                                            <span class="text-2xl font-bold">€13.99</span>
+                                            <button onclick="openPurchaseModal('FakeCrime.bio Viewbot', 13.99, 'fakecrime', './assets/fakecrimebio.png')" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition">
+                                                Buy <i class="fas fa-arrow-right ml-1"></i>
+                                            </button>
+                                        </div>
+                                        <button onclick="openProductInfoModal('FakeCrime.bio Viewbot', '€13.99', './assets/fakecrimebio.png', fakeCrimeChecklist)" class="bg-black hover:bg-black text-white px-4 py-2 rounded-lg text-sm font-medium transition w-full info-button-glow">
+                                            Info <i class="fas fa-info-circle ml-1"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Random product -->
+                                <div class="product-card rounded-xl overflow-hidden border border-gray-800 hover:border-red-500 transition-all duration-300 hidden-scroll">
+                                    <div class="relative">
+                                        <img src="images/1.png" alt="Random product" class="w-full h-48 object-cover">
+                                        <div class="absolute top-0 left-0 new-label text-white text-xs font-bold px-2 py-1 rounded-br">BESTSELLER</div>
+                                    </div>
+                                    <div class="p-6">
+                                        <h3 class="text-xl font-bold mb-2">Random product</h3>
+                                        <p class="text-gray-400 text-sm mb-4">The ultimate TikTok Account,with cutting-edge evasion techniques.</p>
+                                        <div class="flex items-center justify-between mb-2">
+                                            <span class="text-2xl font-bold">From €29.95</span>
+                                            <button onclick="openPurchaseModal('Random product', 29.95, 'random', './assets/1.png')" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition">
+                                                Buy <i class="fas fa-arrow-right ml-1"></i>
+                                            </button>
+                                        </div>
+                                        <button onclick="openProductInfoModal('Random product', 'From €29.95', './assets/1.png', fudCrypterChecklist)" class="bg-black hover:bg-black text-white px-4 py-2 rounded-lg text-sm font-medium transition w-full info-button-glow">
+                                            Info <i class="fas fa-info-circle ml-1"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- CrypticForge -->
+                                <div class="product-card rounded-xl overflow-hidden border border-gray-800 hover:border-red-500 transition-all duration-300 hidden-scroll">
+                                    <div class="relative">
+                                        <img src="images/crypticforge.png" alt="CrypticForge Ransomware Builder" class="w-full h-48 object-cover">
+                                        <div class="absolute top-0 left-0 new-label-blue text-white text-xs font-bold px-2 py-1 rounded-br">NEW</div>
+                                    </div>
+                                    <div class="p-6">
+                                        <h3 class="text-xl font-bold mb-2">CrypticForge</h3>
+                                        <p class="text-gray-400 text-sm mb-4">Build powerful ransomware in seconds, from pranks to pro-grade.</p>
+                                        <div class="flex items-center justify-between mb-2">
+                                            <span class="text-2xl font-bold">From €39.95</span>
+                                            <button onclick="openPurchaseModal('CrypticForge', 39.95, 'crypticforge', './assets/crypticforge.png')" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition">
+                                                Buy <i class="fas fa-arrow-right ml-1"></i>
+                                            </button>
+                                        </div>
+                                        <button onclick="openProductInfoModal('CrypticForge', 'From €29.95', './assets/crypticforge.png', crypticForgeChecklist)" class="bg-black hover:bg-black text-white px-4 py-2 rounded-lg text-sm font-medium transition w-full info-button-glow">
+                                            Info <i class="fas fa-info-circle ml-1"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Monero Crypto Jacker -->
+                                <div class="product-card rounded-xl overflow-hidden border border-gray-800 hover:border-red-500 transition-all duration-300 hidden-scroll">
+                                    <div class="relative">
+                                        <img src="images/cryptominer.png" alt="Monero Crypto Jacker" class="w-full h-48 object-cover">
+                                        <div class="absolute top-0 left-0 new-label-blue text-white text-xs font-bold px-2 py-1 rounded-br">NEW</div>
+                                    </div>
+                                    <div class="p-6">
+                                        <h3 class="text-xl font-bold mb-2">Monero Crypto Jacker</h3>
+                                        <p class="text-gray-400 text-sm mb-4">Advanced tool for specialized mining requirements.</p>
+                                        <div class="flex items-center justify-between mb-2">
+                                            <span class="text-2xl font-bold">From €49.95</span>
+                                            <button onclick="openPurchaseModal('Monero Crypto Jacker', 59.99, 'monero', './assets/cryptominer.png')" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition">
+                                                Buy <i class="fas fa-arrow-right ml-1"></i>
+                                            </button>
+                                        </div>
+                                        <button onclick="openProductInfoModal('Monero Crypto Jacker', 'From €49.95', './assets/cryptominer.png', moneroCryptoJackerChecklist)" class="bg-black hover:bg-black text-white px-4 py-2 rounded-lg text-sm font-medium transition w-full info-button-glow">
+                                            Info <i class="fas fa-info-circle ml-1"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- CrystalEye -->
+                                <div class="product-card rounded-xl overflow-hidden border border-gray-800 hover:border-red-500 transition-all duration-300 hidden-scroll">
+                                    <div class="relative">
+                                        <img src="images/darkpulse.png" alt="CrystalEye RAT" class="w-full h-48 object-cover">
+                                        <div class="absolute top-0 left-0 new-label-blue text-white text-xs font-bold px-2 py-1 rounded-br">NEW</div>
+                                    </div>
+                                    <div class="p-6">
+                                        <h3 class="text-xl font-bold mb-2">CrystalEye</h3>
+                                        <p class="text-gray-400 text-sm mb-4">Advanced RAT with total system control ,Fully undetectable.</p>
+                                        <div class="flex items-center justify-between mb-2">
+                                            <span class="text-2xl font-bold">From €69.95</span>
+                                            <button onclick="openPurchaseModal('CrystalEye', 89.99, 'Crystaleye', './assets/Crystaleye.png')" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition">
+                                                Buy <i class="fas fa-arrow-right ml-1"></i>
+                                            </button>
+                                        </div>
+                                        <button onclick="openProductInfoModal('CrystalEye', 'From €69.95', './assets/Crystaleye.png', CrystalEyeChecklist)" class="bg-black hover:bg-black text-white px-4 py-2 rounded-lg text-sm font-medium transition w-full info-button-glow">
+                                            Info <i class="fas fa-info-circle ml-1"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Evil GPT -->
+                                <div class="product-card rounded-xl overflow-hidden border border-gray-800 hover:border-red-500 transition-all duration-300 hidden-scroll">
+                                    <div class="relative">
+                                        <img src="images/evilgpt.png" alt="WormGPT" class="w-full h-48 object-cover">
+                                        <div class="absolute top-0 left-0 new-label-blue text-white text-xs font-bold px-2 py-1 rounded-br">NEW</div>
+                                    </div>
+                                    <div class="p-6">
+                                        <h3 class="text-xl font-bold mb-2">WormGPT</h3>
+                                        <p class="text-gray-400 text-sm mb-4">Powerful AI for specialized applications. Powered by tokens.</p>
+                                        <div class="flex items-center justify-between mb-2">
+                                            <span class="text-2xl font-bold">From €14.95</span>
+                                            <button onclick="openPurchaseModal('WormGPT', 11.99, 'evilgpt', './assets/evilgpt.png')" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition">
+                                                Buy <i class="fas fa-arrow-right ml-1"></i>
+                                            </button>
+                                        </div>
+                                        <button onclick="openProductInfoModal('WormGPT', 'From €14.95', './assets/evilgpt.png', featuresChecklist)" class="bg-black hover:bg-black text-white px-4 py-2 rounded-lg text-sm font-medium transition w-full info-button-glow">
+                                            Info <i class="fas fa-info-circle ml-1"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="product-card rounded-xl overflow-hidden border border-gray-800 hover:border-red-500 transition-all duration-300 hidden-scroll">
+                                    <div class="relative">
+                                        <img src="images/evilgpt.png" alt="Evil GPT" class="w-full h-48 object-cover">
+                                        <div class="absolute top-0 left-0 new-label-blue text-white text-xs font-bold px-2 py-1 rounded-br">NEW</div>
+                                    </div>
+                                    <div class="p-6">
+                                        <h3 class="text-xl font-bold mb-2">Evil GPT</h3>
+                                        <p class="text-gray-400 text-sm mb-4">Powerful AI for specialized applications. Powered by tokens.</p>
+                                        <div class="flex items-center justify-between mb-2">
+                                            <span class="text-2xl font-bold">From €14.95</span>
+                                            <button onclick="openPurchaseModal('Evil GPT', 11.99, 'evilgpt', './assets/evilgpt.png')" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition">
+                                                Buy <i class="fas fa-arrow-right ml-1"></i>
+                                            </button>
+                                        </div>
+                                        <button onclick="openProductInfoModal('Evil GPT', 'From €14.95', './assets/evilgpt.png', evilGPTChecklist)" class="bg-black hover:bg-black text-white px-4 py-2 rounded-lg text-sm font-medium transition w-full info-button-glow">
+                                            Info <i class="fas fa-info-circle ml-1"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+
+                                <!-- FUD Crypter -->
+                                <div class="product-card rounded-xl overflow-hidden border border-gray-800 hover:border-red-500 transition-all duration-300 hidden-scroll">
+                                    <div class="relative">
+                                        <img src="images/fudcrypter.png" alt="FUD Crypter" class="w-full h-48 object-cover">
+                                        <div class="absolute top-0 left-0 new-label-blue text-white text-xs font-bold px-2 py-1 rounded-br">NEW</div>
+                                    </div>
+                                    <div class="p-6">
+                                        <h3 class="text-xl font-bold mb-2">FUD Crypter</h3>
+                                        <p class="text-gray-400 text-sm mb-4">The ultimate FUD crypter,with cutting-edge evasion techniques.</p>
+                                        <div class="flex items-center justify-between mb-2">
+                                            <span class="text-2xl font-bold">From €29.95</span>
+                                            <button onclick="openPurchaseModal('FUD Crypter', 24.99, 'fudcrypter', './assets/fudcrypter.png')" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition">
+                                                Buy <i class="fas fa-arrow-right ml-1"></i>
+                                            </button>
+                                        </div>
+                                        <button onclick="openProductInfoModal('FUD Crypter', 'From €29.95', './assets/fudcrypter.png', fudCrypterChecklist)" class="bg-black hover:bg-black text-white px-4 py-2 rounded-lg text-sm font-medium transition w-full info-button-glow">
+                                            Info <i class="fas fa-info-circle ml-1"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Malware worm Stealer -->
+                                <div class="product-card rounded-xl overflow-hidden border border-gray-800 hover:border-red-500 transition-all duration-300 hidden-scroll">
+                                    <div class="relative">
+                                        <img src="images/malware.png" alt="Malware worm Stealer" class="w-full h-48 object-cover">
+                                        <div class="absolute top-0 left-0 new-label-blue text-white text-xs font-bold px-2 py-1 rounded-br">NEW</div>
+                                    </div>
+                                    <div class="p-6">
+                                        <h3 class="text-xl font-bold mb-2">Malware worm Stealer</h3>
+                                        <p class="text-gray-400 text-sm mb-4">The ultimate Malware worm Stealer,with cutting-edge evasion techniques.</p>
+                                        <div class="flex items-center justify-between mb-2">
+                                            <span class="text-2xl font-bold">From €30.00</span>
+                                            <button onclick="openPurchaseModal('Malware worm Stealer', 30.00, 'Malware worm Stealer', './assets/fudcrypter.png')" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition">
+                                                Buy <i class="fas fa-arrow-right ml-1"></i>
+                                            </button>
+                                        </div>
+                                        <button onclick="openProductInfoModal('Malware worm Stealer', 'From €30.00', './assets/fudcrypter.png', fudCrypterChecklist)" class="bg-black hover:bg-black text-white px-4 py-2 rounded-lg text-sm font-medium transition w-full info-button-glow">
+                                            Info <i class="fas fa-info-circle ml-1"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- DarkPulse DDoS -->
+                                <div class="product-card rounded-xl overflow-hidden border border-gray-800 hover:border-red-500 transition-all duration-300 hidden-scroll">
+                                    <div class="relative">
+                                        <img src="images/darkpulse.png" alt="DarkPulse DDoS" class="w-full h-48 object-cover">
+                                        <div class="absolute top-0 left-0 new-label-blue text-white text-xs font-bold px-2 py-1 rounded-br">NEW</div>
+                                    </div>
+                                    <div class="p-6">
+                                        <h3 class="text-xl font-bold mb-2">DarkPulse DDoS</h3>
+                                        <p class="text-gray-400 text-sm mb-4">Unleash devastating DDoS attacks with unmatched power and precision.</p>
+                                        <div class="flex items-center justify-between mb-2">
+                                            <span class="text-2xl font-bold">From €59.95</span>
+                                            <button onclick="openPurchaseModal('DarkPulse DDoS', 79.95, 'darkpulse', './assets/darkpulse.png')" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition">
+                                                Buy <i class="fas fa-arrow-right ml-1"></i>
+                                            </button>
+                                        </div>
+                                        <button onclick="openProductInfoModal('DarkPulse DDoS', 'From €59.95', './assets/darkpulse.png', darkPulseDDoSChecklist)" class="bg-black hover:bg-black text-white px-4 py-2 rounded-lg text-sm font-medium transition w-full info-button-glow">
+                                            Info <i class="fas fa-info-circle ml-1"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Accounts Section Divider -->
+                            <div class="mt-20 mb-10 text-center">
+                                <div class="section-divider">
+                                    <h3 class="text-2xl font-bold text-white"></h3>
+                                    <h2 class="text-2xl font-bold text-white">Premium Accounts</h2>
+                                    <p class="text-gray-400">Verified social media accounts</p>
+                                </div>
+
+                                <!-- Accounts Grid -->
+                                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                                    <!-- YouTube Account -->
+                                    <div class="product-card rounded-xl overflow-hidden border border-gray-800 hover:border-purple-500 transition-all duration-300 hidden-scroll">
+                                        <div class="relative">
+                                            <img src="images/youtube.png" alt="YouTube Account" class="w-full h-48 object-cover">
+                                            <div class="absolute top-0 left-0 account-label text-white text-xs font-bold px-2 py-1 rounded-br">ACCOUNT</div>
+                                        </div>
+                                        <div class="p-6">
+                                            <h3 class="text-xl font-bold mb-2">YouTube Account</h3>
+                                            <p class="text-gray-400 text-sm mb-4">Premium YouTube account with established presence and engagement.</p>
+                                            <div class="flex items-center justify-between mb-2">
+                                                <span class="text-2xl font-bold">From €25.00</span>
+                                                <button onclick="openPurchaseModal('YouTube Account', 25.00, 'yt', './assets/youtube.png')" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition">
+                                                    Buy <i class="fas fa-arrow-right ml-1"></i>
+                                                </button>
+                                            </div>
+                                            <button onclick="openProductInfoModal('YouTube Account', 'From €25.00', './assets/youtube.png', fudCrypterChecklist)" class="bg-black hover:bg-black text-white px-4 py-2 rounded-lg text-sm font-medium transition w-full info-button-glow">
+                                                Info <i class="fas fa-info-circle ml-1"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Instagram Account -->
+                                    <div class="product-card rounded-xl overflow-hidden border border-gray-800 hover:border-purple-500 transition-all duration-300 hidden-scroll">
+                                        <div class="relative">
+                                            <img src="images/insta.png" alt="Instagram Account" class="w-full h-48 object-cover">
+                                            <div class="absolute top-0 left-0 account-label text-white text-xs font-bold px-2 py-1 rounded-br">ACCOUNT</div>
+                                        </div>
+                                        <div class="p-6">
+                                            <h3 class="text-xl font-bold mb-2">Instagram Account</h3>
+                                            <p class="text-gray-400 text-sm mb-4">Verified Instagram account with followers and engagement history.</p>
+                                            <div class="flex items-center justify-between mb-2">
+                                                <span class="text-2xl font-bold">From €25.00</span>
+                                                <button onclick="openPurchaseModal('Instagram Account', 25.00, 'inst', './assets/insta.png')" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition">
+                                                    Buy <i class="fas fa-arrow-right ml-1"></i>
+                                                </button>
+                                            </div>
+                                            <button onclick="openProductInfoModal('Instagram Account', 'From €25.00', './assets/insta.png', fudCrypterChecklist)" class="bg-black hover:bg-black text-white px-4 py-2 rounded-lg text-sm font-medium transition w-full info-button-glow">
+                                                Info <i class="fas fa-info-circle ml-1"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Twitch Account -->
+                                    <div class="product-card rounded-xl overflow-hidden border border-gray-800 hover:border-purple-500 transition-all duration-300 hidden-scroll">
+                                        <div class="relative">
+                                            <img src="images/tw.png" alt="Twitch Account" class="w-full h-48 object-cover">
+                                            <div class="absolute top-0 left-0 account-label text-white text-xs font-bold px-2 py-1 rounded-br">ACCOUNT</div>
+                                        </div>
+                                        <div class="p-6">
+                                            <h3 class="text-xl font-bold mb-2">Twitch Account</h3>
+                                            <p class="text-gray-400 text-sm mb-4">Established Twitch account with followers and streaming history.</p>
+                                            <div class="flex items-center justify-between mb-2">
+                                                <span class="text-2xl font-bold">From €25.00</span>
+                                                <button onclick="openPurchaseModal('Twitch Account', 25.00, 'tw', './assets/tw.png')" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition">
+                                                    Buy <i class="fas fa-arrow-right ml-1"></i>
+                                                </button>
+                                            </div>
+                                            <button onclick="openProductInfoModal('Twitch Account', 'From €25.00', './assets/tw.png', fudCrypterChecklist)" class="bg-black hover:bg-black text-white px-4 py-2 rounded-lg text-sm font-medium transition w-full info-button-glow">
+                                                Info <i class="fas fa-info-circle ml-1"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <!-- TikTok Account -->
+                                    <div class="product-card rounded-xl overflow-hidden border border-gray-800 hover:border-purple-500 transition-all duration-300 hidden-scroll">
+                                        <div class="relative">
+                                            <img src="images/tiktok.png" alt="TikTok Account" class="w-full h-48 object-cover">
+                                            <div class="absolute top-0 left-0 account-label text-white text-xs font-bold px-2 py-1 rounded-br">ACCOUNT</div>
+                                        </div>
+                                        <div class="p-6">
+                                            <h3 class="text-xl font-bold mb-2">TikTok Account</h3>
+                                            <p class="text-gray-400 text-sm mb-4">Popular TikTok account with followers and viral content history.</p>
+                                            <div class="flex items-center justify-between mb-2">
+                                                <span class="text-2xl font-bold">From €25.00</span>
+                                                <button onclick="openPurchaseModal('TikTok Account', 25.00, 'media', './assets/tiktok.png')" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition">
+                                                    Buy <i class="fas fa-arrow-right ml-1"></i>
+                                                </button>
+                                            </div>
+                                            <button onclick="openProductInfoModal('TikTok Account', 'From €25.00', './assets/tiktok.png', fudCrypterChecklist)" class="bg-black hover:bg-black text-white px-4 py-2 rounded-lg text-sm font-medium transition w-full info-button-glow">
+                                                Info <i class="fas fa-info-circle ml-1"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            
+
+
+
+
+
+
+</div>
+
+</section>
+
+
+<!-- Reviews Section -->
+<section id="reviews" class="py-20 px-4 sm:px-6 lg:px-8 bg-black">
+    <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-16 hidden-scroll">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">
+                <span class="gradient-text">What Our Customers Say</span>
+            </h2>
+            <p class="text-gray-400 max-w-2xl mx-auto">
+                Hear from our satisfied users about their experience with Crystal Shop.
+            </p>
+        </div>
+        <div class="reviews-container overflow-hidden">
+            <div class="reviews-track flex animate-scroll">
+                <!-- Review 1 -->
+                <div class="review-card bg-black rounded-xl p-6 mx-4 min-w-[300px] max-w-[300px] border border-gray-700 hover:border-[var(--accent)] transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        <span class="text-yellow-400 text-xl">★★★★★</span>
+                    </div>
+                    <p class="text-gray-300 text-sm mb-4">Thx for the fast support guns.lol tool working without any problems and thx for the help from @sudo</p>
+                    <p class="text-gray-400 text-sm font-semibold">xSulenKing47</p>
+                </div>
+                <!-- Review 2 -->
+                <div class="review-card bg-black rounded-xl p-6 mx-4 min-w-[300px] max-w-[300px] border border-gray-700 hover:border-[var(--accent)] transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        <span class="text-yellow-400 text-xl">★★★★☆</span>
+                    </div>
+                    <p class="text-gray-300 text-sm mb-4">Nice support viewbot working perfectly Could be a bit faster to set up but overall dope</p>
+                    <p class="text-gray-400 text-sm font-semibold">crspyashley</p>
+                </div>
+                <!-- Review 3 -->
+                <div class="review-card bg-black rounded-xl p-6 mx-4 min-w-[300px] max-w-[300px] border border-gray-700 hover:border-[var(--accent)] transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        <span class="text-yellow-400 text-xl">★★★★★</span>
+                    </div>
+                    <p class="text-gray-300 text-sm mb-4">appreciate that gng fakecrime viewbot is crazy good hehe thought it wouldn't work but yea crazy works guys thx for fast reply</p>
+                    <p class="text-gray-400 text-sm font-semibold">Crimeviiper</p>
+                </div>
+                <!-- Review 4 -->
+                <div class="review-card bg-black rounded-xl p-6 mx-4 min-w-[300px] max-w-[300px] border border-gray-700 hover:border-[var(--accent)] transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        <span class="text-yellow-400 text-xl">★★★★★</span>
+                    </div>
+                    <p class="text-gray-300 text-sm mb-4">Top alles funktioniert küss eure Herzen bei Gott CrystalEye ist der geisteskrank wie heftig alles funktioniert vorallem die erste rat die ein krankes rootkit hat mit dauerhafter persistenz i meaann cmoooon jungs saubere arbeit</p>
+                    <p class="text-gray-400 text-sm font-semibold">KrvsserTyp999</p>
+                </div>
+                <!-- Review 5 -->
+                <div class="review-card bg-black rounded-xl p-6 mx-4 min-w-[300px] max-w-[300px] border border-gray-700 hover:border-[var(--accent)] transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        <span class="text-yellow-400 text-xl">★★★★☆</span>
+                    </div>
+                    <p class="text-gray-300 text-sm mb-4">Hab gedacht wird nix aber alles klappt geisteskrank jetzt erstmal fame auf guns.lol Danke @jaqliv und das ganze staff team:D</p>
+                    <p class="text-gray-400 text-sm font-semibold">Alexarusski</p>
+                </div>
+                <!-- Review 6 -->
+                <div class="review-card bg-black rounded-xl p-6 mx-4 min-w-[300px] max-w-[300px] border border-gray-700 hover:border-[var(--accent)] transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        <span class="text-yellow-400 text-xl">★★★★★</span>
+                    </div>
+                    <p class="text-gray-300 text-sm mb-4">EvilGPT is straight fire i thought a.is jailbreaks already got some power but this is just a different type of level no debugging just purr functionality type shii and support was quick af. Keep it up thx</p>
+                    <p class="text-gray-400 text-sm font-semibold">D8Ninja</p>
+                </div>
+                <!-- Review 7 -->
+                <div class="review-card bg-black rounded-xl p-6 mx-4 min-w-[300px] max-w-[300px] border border-gray-700 hover:border-[var(--accent)] transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        <span class="text-yellow-400 text-xl">★★★★☆</span>
+                    </div>
+                    <p class="text-gray-300 text-sm mb-4">Support war mega nett und schnell fakecrime bot läuft wie geschmiert</p>
+                    <p class="text-gray-400 text-sm font-semibold">Fsocietyboy</p>
+                </div>
+                <!-- Review 8 -->
+                <div class="review-card bg-black rounded-xl p-6 mx-4 min-w-[300px] max-w-[300px] border border-gray-700 hover:border-[var(--accent)] transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        <span class="text-yellow-400 text-xl">★★★★★</span>
+                    </div>
+                    <p class="text-gray-300 text-sm mb-4">"Monero Jacker is insane setup was damn easy and its running smooth i bought it for 3Months and got in 2 weeks already a couple hundred $ more so nice and Thx for the updates i can change like everthing how i want it to be</p>
+                    <p class="text-gray-400 text-sm font-semibold">bidelskren21</p>
+                </div>
+                <!-- Review 9 -->
+                <div class="review-card bg-black rounded-xl p-6 mx-4 min-w-[300px] max-w-[300px] border border-gray-700 hover:border-[var(--accent)] transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        <span class="text-yellow-400 text-xl">★★★★★</span>
+                    </div>
+                    <p class="text-gray-300 text-sm mb-4">Echt krank wie gut CrypticForge läuft hab in gefühlt 5min ne Ransomware im builder erstellt erstmal nur für mein kollegen um es zu testen einfach heftig lol, danke fr</p>
+                    <p class="text-gray-400 text-sm font-semibold">CodemasterGzzz</p>
+                </div>
+                <!-- Review 10 -->
+                <div class="review-card bg-black rounded-xl p-6 mx-4 min-w-[300px] max-w-[300px] border border-gray-700 hover:border-[var(--accent)] transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        <span class="text-yellow-400 text-xl">★★★★☆</span>
+                    </div>
+                    <p class="text-gray-300 text-sm mb-4">Guns.lol bot is dope works perfectly, Support answered in like 10min props!</p>
+                    <p class="text-gray-400 text-sm font-semibold">N3onSnip3r34</p>
+                </div>
+                <!-- Review 11 -->
+                <div class="review-card bg-black rounded-xl p-6 mx-4 min-w-[300px] max-w-[300px] border border-gray-700 hover:border-[var(--accent)] transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        <span class="text-yellow-400 text-xl">★★★★★</span>
+                    </div>
+                    <p class="text-gray-300 text-sm mb-4">CrystalEye RAT is next level NEVER saw a Rat this high on this level thats just insane full control over the infected device and super easy to use 12/10!</p>
+                    <p class="text-gray-400 text-sm font-semibold">GhostWithSmoke</p>
+                </div>
+                <!-- Review 12 -->
+                <div class="review-card bg-black rounded-xl p-6 mx-4 min-w-[300px] max-w-[300px] border border-gray-700 hover:border-[var(--accent)] transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        <span class="text-yellow-400 text-xl">★★★★☆</span>
+                    </div>
+                    <p class="text-gray-300 text-sm mb-4">Zuerst skeptisch wegen crypto bezahlung aber wurde nicht entäuscht fakecrime bot läuft perfekt Support war auch top danke</p>
+                    <p class="text-gray-400 text-sm font-semibold">SchattenKriegerYT</p>
+                </div>
+                <!-- Review 13 -->
+                <div class="review-card bg-black rounded-xl p-6 mx-4 min-w-[300px] max-w-[300px] border border-gray-700 hover:border-[var(--accent)] transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        <span class="text-yellow-400 text-xl">★★★★★</span>
+                    </div>
+                    <p class="text-gray-300 text-sm mb-4">Fast delivery gunslol viewbot is fire Big thx to @CrystalCrystal for help and such a tool</p>
+                    <p class="text-gray-400 text-sm font-semibold">FireStormmmm</p>
+                </div>
+                <!-- Review 14 -->
+                <div class="review-card bg-black rounded-xl p-6 mx-4 min-w-[300px] max-w-[300px] border border-gray-700 hover:border-[var(--accent)] transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        <span class="text-yellow-400 text-xl">★★★★★</span>
+                    </div>
+                    <p class="text-gray-300 text-sm mb-4">nicer Support @sudo  hab sofort Antwort gekriegt EvilGPT ist der Hammer kak auf jeden AI-Jailbreak das ist was ganz anderes bei gott ich kann nur python aber wenn ich etwas möchte in c#/c++ erstellt er mir original einfach Perfekte Codes</p>
+                    <p class="text-gray-400 text-sm font-semibold">PixelPan1</p>
+                </div>
+                <!-- Review 15 -->
+                <div class="review-card bg-black rounded-xl p-6 mx-4 min-w-[300px] max-w-[300px] border border-gray-700 hover:border-[var(--accent)] transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        <span class="text-yellow-400 text-xl">★★★★☆</span>
+                    </div>
+                    <p class="text-gray-300 text-sm mb-4">Works like a charm fakecrime bot is smooth</p>
+                    <p class="text-gray-400 text-sm font-semibold">IceDragonsILoveIt</p>
+                </div>
+                <!-- Review 16 -->
+                <div class="review-card bg-black rounded-xl p-6 mx-4 min-w-[300px] max-w-[300px] border border-gray-700 hover:border-[var(--accent)] transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        <span class="text-yellow-400 text-xl">★★★★★</span>
+                    </div>
+                    <p class="text-gray-300 text-sm mb-4">Monero setup war easy läuft stabil hab schon erstes geld damit gemacht nebenbei im monat ein paar tausender schaden nie lmao Danke für die schnelle Hilfe korrekt</p>
+                    <p class="text-gray-400 text-sm font-semibold">selingurr9</p>
+                </div>
+                <!-- Review 17 -->
+                <div class="review-card bg-black rounded-xl p-6 mx-4 min-w-[300px] max-w-[300px] border border-gray-700 hover:border-[var(--accent)] transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        <span class="text-yellow-400 text-xl">★★★★★</span>
+                    </div>
+                    <p class="text-gray-300 text-sm mb-4">CrypticForge is wild built a ransom minutes Support was A++ ma guyss</p>
+                    <p class="text-gray-400 text-sm font-semibold">Chaosfindsdarknes</p>
+                </div>
+                <!-- Review 18 -->
+                <div class="review-card bg-black rounded-xl p-6 mx-4 min-w-[300px] max-w-[300px] border border-gray-700 hover:border-[var(--accent)] transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        <span class="text-yellow-400 text-xl">★★★★☆</span>
+                    </div>
+                    <p class="text-gray-300 text-sm mb-4">gunslol bot is clean fast setup Support answered all my questions."</p>
+                    <p class="text-gray-400 text-sm font-semibold">Damoz</p>
+                </div>
+                <!-- Review 19 -->
+                <div class="review-card bg-black rounded-xl p-6 mx-4 min-w-[300px] max-w-[300px] border border-gray-700 hover:border-[var(--accent)] transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        <span class="text-yellow-400 text-xl">★★★★★</span>
+                    </div>
+                    <p class="text-gray-300 text-sm mb-4">CrystalEye ist krank volle Kontrolle ich kann alleine entscheiden wann ich welchen vic nicht mehr brauche und ihn entfernen selbst WD konnte die rat nicht löschen KRANK!!und super stabil Danke</p>
+                    <p class="text-gray-400 text-sm font-semibold">nightvis0n22</p>
+                </div>
+                <!-- Review 20 -->
+                <div class="review-card bg-black rounded-xl p-6 mx-4 min-w-[300px] max-w-[300px] border border-gray-700 hover:border-[var(--accent)] transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        <span class="text-yellow-400 text-xl">★★★★☆</span>
+                    </div>
+                    <p class="text-gray-300 text-sm mb-4">Fakecrime bot works great support was quick Setup was easy!</p>
+                    <p class="text-gray-400 text-sm font-semibold">ZeusThaOne</p>
+                </div>
+                <!-- Review 21 -->
+                <div class="review-card bg-black rounded-xl p-6 mx-4 min-w-[300px] max-w-[300px] border border-gray-700 hover:border-[var(--accent)] transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        <span class="text-yellow-400 text-xl">★★★★★</span>
+                    </div>
+                    <p class="text-gray-300 text-sm mb-4">Guns.lol viewbot is fire got fame quick hahah Ty for support also jaq and sudo</p>
+                    <p class="text-gray-400 text-sm font-semibold">Blazeking999</p>
+                </div>
+                <!-- Review 22 -->
+                <div class="review-card bg-black rounded-xl p-6 mx-4 min-w-[300px] max-w-[300px] border border-gray-700 hover:border-[var(--accent)] transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        <span class="text-yellow-400 text-xl">★★★★★</span>
+                    </div>
+                    <p class="text-gray-300 text-sm mb-4">evilGPT läuft  hab noch nie eine so krasse ai mit dieser länge an skripten gesehen und der gesammten sofortigen funktionalität</p>
+                    <p class="text-gray-400 text-sm font-semibold">CybercrimeLOL13</p>
+                </div>
+                <!-- Review 23 -->
+                <div class="review-card bg-black rounded-xl p-6 mx-4 min-w-[300px] max-w-[300px] border border-gray-700 hover:border-[var(--accent)] transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        <span class="text-yellow-400 text-xl">★★★★☆</span>
+                    </div>
+                    <p class="text-gray-300 text-sm mb-4">Fakecrime bot is solid, works as promised</p>
+                    <p class="text-gray-400 text-sm font-semibold">FByteLinse</p>
+                </div>
+                <!-- Review 24 -->
+                <div class="review-card bg-black rounded-xl p-6 mx-4 min-w-[300px] max-w-[300px] border border-gray-700 hover:border-[var(--accent)] transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        <span class="text-yellow-400 text-xl">★★★★★</span>
+                    </div>
+                    <p class="text-gray-300 text-sm mb-4">Monero Jacker läuft stabil setup war easy thx für die hilfe</p>
+                    <p class="text-gray-400 text-sm font-semibold">Blockbusterboss</p>
+                </div>
+                <!-- Review 25 -->
+                <div class="review-card bg-black rounded-xl p-6 mx-4 min-w-[300px] max-w-[300px] border border-gray-700 hover:border-[var(--accent)] transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        <span class="text-yellow-400 text-xl">★★★★★</span>
+                    </div>
+                    <p class="text-gray-300 text-sm mb-4">CrypticForge is next level built ransomware so fast like fr how did u create such a powerfull tool guys thats fking great job! i had some questions and got fast reply so thx guys i will buy again!</p>
+                    <p class="text-gray-400 text-sm font-semibold">interpolll</p>
+                </div>
+                <!-- Review 26 -->
+                <div class="review-card bg-black rounded-xl p-6 mx-4 min-w-[300px] max-w-[300px] border border-gray-700 hover:border-[var(--accent)] transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        <span class="text-yellow-400 text-xl">★★★★☆</span>
+                    </div>
+                    <p class="text-gray-300 text-sm mb-4">Guns bot is clean fast setup</p>
+                    <p class="text-gray-400 text-sm font-semibold">SkyShark183</p>
+                </div>
+                <!-- Review 27 -->
+                <div class="review-card bg-black rounded-xl p-6 mx-4 min-w-[300px] max-w-[300px] border border-gray-700 hover:border-[var(--accent)] transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        <span class="text-yellow-400 text-xl">★★★★★</span>
+                    </div>
+                    <p class="text-gray-300 text-sm mb-4">CrystalEye ist fireee hab nur für 1 monat aber kaufe mir zu 100% lifetime wenn ich genug geld habe</p>
+                    <p class="text-gray-400 text-sm font-semibold">darkeagleshadow</p>
+                </div>
+                <!-- Review 28 -->
+                <div class="review-card bg-black rounded-xl p-6 mx-4 min-w-[300px] max-w-[300px] border border-gray-700 hover:border-[var(--accent)] transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        <span class="text-yellow-400 text-xl">★★★★☆</span>
+                    </div>
+                    <p class="text-gray-300 text-sm mb-4">fakecrime bot works great</p>
+                    <p class="text-gray-400 text-sm font-semibold">Nightowl</p>
+                </div>
+                <!-- Review 29 -->
+                <div class="review-card bg-black rounded-xl p-6 mx-4 min-w-[300px] max-w-[300px] border border-gray-700 hover:border-[var(--accent)] transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        <span class="text-yellow-400 text-xl">★★★★★</span>
+                    </div>
+                    <p class="text-gray-300 text-sm mb-4">guns.lol viewbot is fire got fame quick. Thx for the fast reply</p>
+                    <p class="text-gray-400 text-sm font-semibold">StarSlinger</p>
+                </div>
+                <!-- Review 30 -->
+                <div class="review-card bg-black rounded-xl p-6 mx-4 min-w-[300px] max-w-[300px] border border-gray-700 hover:border-[var(--accent)] transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        <span class="text-yellow-400 text-xl">★★★★★</span>
+                    </div>
+                    <p class="text-gray-300 text-sm mb-4">support war mega, EvilGPT läuft perfekt. Danke @CrystalCrystal</p>
+                    <p class="text-gray-400 text-sm font-semibold">Voidalkerskii</p>
+                </div>
+                <!-- Review 31 -->
+                <div class="review-card bg-black rounded-xl p-6 mx-4 min-w-[300px] max-w-[300px] border border-gray-700 hover:border-[var(--accent)] transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        <span class="text-yellow-400 text-xl">★★★★☆</span>
+                    </div>
+                    <p class="text-gray-300 text-sm mb-4">fakecrime bot is solid, works great</p>
+                    <p class="text-gray-400 text-sm font-semibold">GlitchMasterOrWho</p>
+                </div>
+                <!-- Review 32 -->
+                <div class="review-card bg-black rounded-xl p-6 mx-4 min-w-[300px] max-w-[300px] border border-gray-700 hover:border-[var(--accent)] transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        <span class="text-yellow-400 text-xl">★★★★★</span>
+                    </div>
+                    <p class="text-gray-300 text-sm mb-4">Monero jacker läuft wie nix, setup war easy. Danke</p>
+                    <p class="text-gray-400 text-sm font-semibold">Momo22</p>
+                </div>
+                <!-- Review 33 -->
+                <div class="review-card bg-black rounded-xl p-6 mx-4 min-w-[300px] max-w-[300px] border border-gray-700 hover:border-[var(--accent)] transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        <span class="text-yellow-400 text-xl">★★★★★</span>
+                    </div>
+                    <p class="text-gray-300 text-sm mb-4">crypticForge is insane built something wild Support was top</p>
+                    <p class="text-gray-400 text-sm font-semibold">Lenibloom</p>
+                </div>
+                <!-- Review 34 -->
+                <div class="review-card bg-black rounded-xl p-6 mx-4 min-w-[300px] max-w-[300px] border border-gray-700 hover:border-[var(--accent)] transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        <span class="text-yellow-400 text-xl">★★★★☆</span>
+                    </div>
+                    <p class="text-gray-300 text-sm mb-4">Guns.lol bot is clean works great Support was super fast</p>
+                    <p class="text-gray-400 text-sm font-semibold">novatrike</p>
+                </div>
+                <!-- Review 35 -->
+                <div class="review-card bg-black rounded-xl p-6 mx-4 min-w-[300px] max-w-[300px] border border-gray-700 hover:border-[var(--accent)] transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        <span class="text-yellow-400 text-xl">★★★★★</span>
+                    </div>
+                    <p class="text-gray-300 text-sm mb-4">CrystalEye ist krank volle Kontrolle Support topp & schnell </p>
+                    <p class="text-gray-400 text-sm font-semibold">D3monL0vee</p>
+                </div>
+                <!-- Review 36 -->
+                <div class="review-card bg-black rounded-xl p-6 mx-4 min-w-[300px] max-w-[300px] border border-gray-700 hover:border-[var(--accent)] transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        <span class="text-yellow-400 text-xl">★★★★☆</span>
+                    </div>
+                    <p class="text-gray-300 text-sm mb-4">fakecrime bot works great support was quick Setup took a bit cause i dont programm but everthing did great</p>
+                    <p class="text-gray-400 text-sm font-semibold">EclipsexXX</p>
+                </div>
+                <!-- Duplicate Reviews for Seamless Loop -->
+                <div class="review-card bg-black rounded-xl p-6 mx-4 min-w-[300px] max-w-[300px] border border-gray-700 hover:border-[var(--accent)] transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        <span class="text-yellow-400 text-xl">★★★★★</span>
+                    </div>
+                    <p class="text-gray-300 text-sm mb-4">Thx for the fast support gunslol tool working without any problems and thx for the help from @sudo</p>
+                    <p class="text-gray-400 text-sm font-semibold">xK1ngXYZ</p>
+                </div>
+                <div class="review-card bg-black rounded-xl p-6 mx-4 min-w-[300px] max-w-[300px] border border-gray-700 hover:border-[var(--accent)] transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        <span class="text-yellow-400 text-xl">★★★★☆</span>
+                    </div>
+                    <p class="text-gray-300 text-sm mb-4">nice & friendly support, viewbot working perfectly</p>
+                    <p class="text-gray-400 text-sm font-semibold">goatofcfam</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .reviews-container {
+        position: relative;
+        width: 100%;
+    }
+
+    .reviews-track {
+        display: flex;
+        will-change: transform;
+    }
+
+    .review-card {
+        flex-shrink: 0;
+        transition: transform 0.3s ease;
+    }
+
+        .review-card:hover {
+            transform: scale(1.02) translateZ(10px);
+            box-shadow: 0 8px 20px rgba(255, 0, 0, 0.3);
+        }
+
+    @keyframes scroll {
+        0% {
+            transform: translateX(0);
+        }
+
+        100% {
+            transform: translateX(-50%);
+        }
+    }
+
+    .animate-scroll {
+        animation: scroll 60s linear infinite;
+    }
+
+    .reviews-container:hover .animate-scroll {
+        animation-play-state: paused;
+    }
+
+    @media (max-width: 768px) {
+        .review-card {
+            min-width: 250px;
+            max-width: 250px;
+        }
+    }
+
+    .reviews-container {
+        position: relative;
+        width: 100%;
+    }
+
+    .reviews-track {
+        display: flex;
+        will-change: transform;
+    }
+
+    .review-card {
+        flex-shrink: 0;
+        transition: transform 0.3s ease;
+    }
+
+        .review-card:hover {
+            transform: scale(1.02) translateZ(10px);
+            box-shadow: 0 8px 20px rgba(255, 0, 0, 0.3);
+        }
+
+    @keyframes scroll {
+        0% {
+            transform: translateX(0);
+        }
+
+        100% {
+            transform: translateX(-50%);
+        }
+    }
+
+    .animate-scroll {
+        animation: scroll 60s linear infinite;
+    }
+
+    .reviews-container:hover .animate-scroll {
+        animation-play-state: paused;
+    }
+
+    @media (max-width: 768px) {
+        .review-card {
+            min-width: 250px;
+            max-width: 250px;
+        }
+    }
+
+    #customerInfoModal input,
+    #customerInfoModal select {
+        background: #000000;
+        border: 1px solid #1a1a1a;
+        color: #ffffff;
+        padding: 0.5rem;
+        border-radius: 0.375rem;
+        width: 100%;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+
+        #customerInfoModal input:focus,
+        #customerInfoModal select:focus {
+            outline: none;
+            border-color: #ff0000;
+            box-shadow: 0 0 8px rgba(255, 0, 0, 0.5);
+        }
+
+    #user-dropdown button {
+        background-color: #000000 !important;
+        box-shadow: 0 0 10px rgba(255, 0, 0, 0.8) !important;
+        transition: box-shadow 0.3s ease !important;
+        color: #ffffff !important;
+    }
+
+        #user-dropdown button:hover {
+            box-shadow: 0 0 15px rgba(255, 0, 0, 1) !important;
+        }
+
+    #dropdown-menu {
+        background-color: #000000 !important;
+        border: 1px solid #1a1a1a !important;
+    }
+
+        #dropdown-menu a,
+        #dropdown-menu button {
+            color: #ffffff !important;
+        }
+
+            #dropdown-menu a:hover,
+            #dropdown-menu button:hover {
+                background-color: #1a1a1a !important;
+                color: #ff0000 !important;
+            }
+</style>
+
+
+
+</body>
+</html>
